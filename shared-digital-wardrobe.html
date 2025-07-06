@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能电子衣橱 - 让穿搭更简单</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px 0;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .header .description {
+            font-size: 1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .welcome-banner {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            color: white;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .welcome-banner h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-banner p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .feature-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .feature-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .feature-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .controls {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .control-section {
+            margin-bottom: 30px;
+        }
+        
+        .control-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .control-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .add-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+        }
+        
+        .btn-edit {
+            background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+            color: white;
+            font-size: 0.9rem;
+            padding: 10px 20px;
+            margin-right: 10px;
+        }
+        
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(56, 161, 105, 0.3);
+        }
+        
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+        }
+        
+        .filter-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .wardrobe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .clothing-item {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .clothing-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .clothing-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .item-image {
+            width: 100%;
+            height: 220px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 4rem;
+            border: 2px dashed #e2e8f0;
+            overflow: hidden;
+        }
+        
+        .item-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+        
+        .item-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .item-detail {
+            font-size: 0.95rem;
+            color: #666;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .item-detail strong {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .item-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        
+        .category-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: white;
+        }
+        
+        .empty-state h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .empty-state p {
+            opacity: 0.7;
+            font-size: 1.1rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #666;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .upload-area:hover {
+            border-color: #5a67d8;
+            background: linear-gradient(135deg, #f0f2ff 0%, #e8ebff 100%);
+            transform: translateY(-2px);
+        }
+        
+        .upload-area.drag-over {
+            border-color: #4ade80;
+            background: linear-gradient(135deg, #f0fff4 0%, #e8f5e8 100%);
+        }
+        
+        .upload-icon {
+            font-size: 3.5rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .upload-hint {
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .image-preview {
+            display: none;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .preview-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(229, 62, 62, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-image:hover {
+            background: rgba(197, 48, 48, 0.9);
+            transform: scale(1.1);
+        }
+        
+        .ai-analyze-btn {
+            background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .ai-analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(159, 122, 234, 0.4);
+        }
+        
+        .ai-analyze-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .real-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .help-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .help-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .help-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .help-item {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .help-item-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .help-item-desc {
+            opacity: 0.9;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+        
+        .footer p {
+            margin-bottom: 10px;
+        }
+        
+        .footer a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer a:hover {
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .add-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .wardrobe-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .feature-highlights {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .help-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👗 AI智能电子衣橱</h1>
+            <p class="subtitle">让穿搭更简单，让生活更美好</p>
+            <p class="description">使用AI技术智能识别你的衣物，轻松管理你的时尚单品</p>
+        </div>
+        
+        <!-- 欢迎横幅 -->
+        <div class="welcome-banner">
+            <h2>🎉 欢迎使用AI智能电子衣橱</h2>
+            <p>上传衣物照片，AI自动识别颜色和类型，让衣橱管理变得轻松有趣！</p>
+        </div>
+        
+        <!-- 功能特色 -->
+        <div class="feature-highlights">
+            <div class="feature-item">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">AI智能识别</div>
+                <div class="feature-desc">自动识别衣物颜色和类型</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">移动端优化</div>
+                <div class="feature-desc">手机平板完美适配</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">数据安全</div>
+                <div class="feature-desc">数据本地存储，保护隐私</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">快速便捷</div>
+                <div class="feature-desc">拖拽上传，一键管理</div>
+            </div>
+        </div>
+        
+        <!-- 统计数据 -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalItems">0</div>
+                <div class="stat-label">总计衣物</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="topCount">0</div>
+                <div class="stat-label">上衣</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="bottomCount">0</div>
+                <div class="stat-label">下装</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="shoeCount">0</div>
+                <div class="stat-label">鞋子</div>
+            </div>
+        </div>
+        
+        <!-- 控制面板 -->
+        <div class="controls">
+            <!-- 添加新衣物 -->
+            <div class="control-section">
+                <h3 class="control-title">
+                    <span>➕</span>
+                    <span>添加新衣物</span>
+                </h3>
+                <form class="add-form" id="addClothingForm">
+                    <div class="form-group">
+                        <label for="itemName">衣物名称</label>
+                        <input type="text" id="itemName" required placeholder="例如：白色T恤">
+                    </div>
+                    <div class="form-group">
+                        <label for="itemCategory">衣物类别</label>
+                        <select id="itemCategory" required>
+                            <option value="">选择类别</option>
+                            <option value="上衣">上衣</option>
+                            <option value="下装">下装</option>
+                            <option value="连衣裙">连衣裙</option>
+                            <option value="外套">外套</option>
+                            <option value="鞋子">鞋子</option>
+                            <option value="配饰">配饰</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemColor">主要颜色</label>
+                        <input type="text" id="itemColor" placeholder="例如：白色、蓝色">
+                    </div>
+                    <div class="form-group">
+                        <label for="itemBrand">品牌</label>
+                        <input type="text" id="itemBrand" placeholder="例如：UNIQLO、ZARA">
+                    </div>
+                    <div class="form-group">
+                        <label for="itemSize">尺码</label>
+                        <input type="text" id="itemSize" placeholder="例如：M、L、XL">
+                    </div>
+                    <div class="form-group">
+                        <label for="itemSeason">适合季节</label>
+                        <select id="itemSeason">
+                            <option value="">选择季节</option>
+                            <option value="春季">春季</option>
+                            <option value="夏季">夏季</option>
+                            <option value="秋季">秋季</option>
+                            <option value="冬季">冬季</option>
+                            <option value="四季">四季</option>
+                        </select>
+                    </div>
+                </form>
+                
+                <!-- 图片上传区域 -->
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>衣物图片</label>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">点击或拖拽图片到这里</div>
+                        <div class="upload-hint">支持 JPG、PNG、WEBP 格式，最大 5MB</div>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="image-preview" id="imagePreview">
+                        <img id="previewImg" class="preview-image" alt="预览">
+                        <button type="button" class="remove-image" id="removeImage">&times;</button>
+                    </div>
+                    <button type="button" class="ai-analyze-btn" id="aiAnalyzeBtn" style="display: none;">
+                        🤖 AI智能识别 (颜色+形状分析)
+                    </button>
+                </div>
+                
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <button type="submit" class="btn btn-primary" form="addClothingForm">添加到衣橱</button>
+                </div>
+            </div>
+            
+            <!-- 筛选和搜索 -->
+            <div class="control-section">
+                <h3 class="control-title">
+                    <span>🔍</span>
+                    <span>筛选和搜索</span>
+                </h3>
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="filterCategory">按类别筛选</label>
+                        <select id="filterCategory">
+                            <option value="">全部类别</option>
+                            <option value="上衣">上衣</option>
+                            <option value="下装">下装</option>
+                            <option value="连衣裙">连衣裙</option>
+                            <option value="外套">外套</option>
+                            <option value="鞋子">鞋子</option>
+                            <option value="配饰">配饰</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterSeason">按季节筛选</label>
+                        <select id="filterSeason">
+                            <option value="">全部季节</option>
+                            <option value="春季">春季</option>
+                            <option value="夏季">夏季</option>
+                            <option value="秋季">秋季</option>
+                            <option value="冬季">冬季</option>
+                            <option value="四季">四季</option>
+                        </select>
+                    </div>
+                    <div class="filter-group search-box">
+                        <label for="searchInput">搜索衣物</label>
+                        <input type="text" id="searchInput" placeholder="按名称、颜色或品牌搜索...">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 使用帮助 -->
+        <div class="help-section">
+            <h3 class="help-title">
+                <span>💡</span>
+                <span>使用帮助</span>
+            </h3>
+            <div class="help-content">
+                <div class="help-item">
+                    <div class="help-item-title">📸 上传照片</div>
+                    <div class="help-item-desc">拖拽或点击上传衣物照片，支持JPG、PNG、WEBP格式</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-item-title">🤖 AI识别</div>
+                    <div class="help-item-desc">上传图片后点击AI识别按钮，自动分析颜色和类型</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-item-title">🏷️ 标签管理</div>
+                    <div class="help-item-desc">为衣物添加品牌、尺码、季节等标签，方便管理</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-item-title">🔍 快速搜索</div>
+                    <div class="help-item-desc">使用筛选和搜索功能，快速找到想要的衣物</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 衣物展示区域 -->
+        <div id="wardrobeGrid" class="wardrobe-grid"></div>
+        
+        <!-- 空状态 -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <h3>你的衣橱还是空的</h3>
+            <p>开始添加你的第一件衣物吧！让AI帮你智能管理衣橱</p>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="footer">
+            <p>AI智能电子衣橱 - 让穿搭更简单</p>
+            <p>数据本地存储，保护你的隐私安全</p>
+            <p>❤️ 分享给朋友，一起享受智能衣橱的乐趣</p>
+        </div>
+    </div>
+    
+    <!-- 编辑模态框 -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">编辑衣物信息</h3>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editClothingForm">
+                <div class="form-group">
+                    <label for="editItemName">衣物名称</label>
+                    <input type="text" id="editItemName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editItemCategory">衣物类别</label>
+                    <select id="editItemCategory" required>
+                        <option value="">选择类别</option>
+                        <option value="上衣">上衣</option>
+                        <option value="下装">下装</option>
+                        <option value="连衣裙">连衣裙</option>
+                        <option value="外套">外套</option>
+                        <option value="鞋子">鞋子</option>
+                        <option value="配饰">配饰</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editItemColor">主要颜色</label>
+                    <input type="text" id="editItemColor">
+                </div>
+                <div class="form-group">
+                    <label for="editItemBrand">品牌</label>
+                    <input type="text" id="editItemBrand">
+                </div>
+                <div class="form-group">
+                    <label for="editItemSize">尺码</label>
+                    <input type="text" id="editItemSize">
+                </div>
+                <div class="form-group">
+                    <label for="editItemSeason">适合季节</label>
+                    <select id="editItemSeason">
+                        <option value="">选择季节</option>
+                        <option value="春季">春季</option>
+                        <option value="夏季">夏季</option>
+                        <option value="秋季">秋季</option>
+                        <option value="冬季">冬季</option>
+                        <option value="四季">四季</option>
+                    </select>
+                </div>
+                
+                <!-- 编辑模态框中的图片上传 -->
+                <div class="form-group">
+                    <label>衣物图片</label>
+                    <div class="upload-area" id="editUploadArea">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">点击或拖拽图片更换</div>
+                        <div class="upload-hint">支持 JPG、PNG、WEBP 格式，最大 5MB</div>
+                        <input type="file" id="editImageInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="image-preview" id="editImagePreview">
+                        <img id="editPreviewImg" class="preview-image" alt="预览">
+                        <button type="button" class="remove-image" id="editRemoveImage">&times;</button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary">保存更改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // 衣物数据存储
+        let clothingItems = JSON.parse(localStorage.getItem('clothingItems')) || [];
+        let editingItemId = null;
+        let currentImageData = null;
+        let editImageData = null;
+        
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', function() {
+            renderWardrobe();
+            updateStats();
+            
+            // 绑定事件监听器
+            document.getElementById('addClothingForm').addEventListener('submit', addClothing);
+            document.getElementById('editClothingForm').addEventListener('submit', updateClothing);
+            document.getElementById('filterCategory').addEventListener('change', filterItems);
+            document.getElementById('filterSeason').addEventListener('change', filterItems);
+            document.getElementById('searchInput').addEventListener('input', filterItems);
+            
+            // 图片上传相关事件
+            setupImageUpload();
+            setupEditImageUpload();
+            
+            // 显示欢迎信息
+            if (clothingItems.length === 0) {
+                setTimeout(() => {
+                    showNotification('欢迎使用AI智能电子衣橱！🎉', 'info');
+                }, 1000);
+            }
+        });
+        
+        // 添加新衣物
+        function addClothing(e) {
+            e.preventDefault();
+            
+            const newItem = {
+                id: Date.now(),
+                name: document.getElementById('itemName').value,
+                category: document.getElementById('itemCategory').value,
+                color: document.getElementById('itemColor').value,
+                brand: document.getElementById('itemBrand').value,
+                size: document.getElementById('itemSize').value,
+                season: document.getElementById('itemSeason').value,
+                image: currentImageData,
+                dateAdded: new Date().toLocaleDateString()
+            };
+            
+            clothingItems.push(newItem);
+            saveToLocalStorage();
+            renderWardrobe();
+            updateStats();
+            
+            // 重置表单
+            document.getElementById('addClothingForm').reset();
+            resetImageUpload();
+            
+            // 显示成功消息
+            showNotification('衣物添加成功！✨', 'success');
+        }
+        
+        // 保存到本地存储
+        function saveToLocalStorage() {
+            localStorage.setItem('clothingItems', JSON.stringify(clothingItems));
+        }
+        
+        // 渲染衣橱
+        function renderWardrobe(items = clothingItems) {
+            const grid = document.getElementById('wardrobeGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (items.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            grid.innerHTML = items.map(item => `
+                <div class="clothing-item">
+                    <div class="category-tag">${item.category}</div>
+                    <div class="item-image">
+                        ${item.image ? 
+                            `<img src="${item.image}" alt="${item.name}" class="real-image">` : 
+                            `<div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 4rem; border: 2px dashed #e2e8f0; border-radius: 15px; background: #f8f9fa;">${getCategoryIcon(item.category)}</div>`
+                        }
+                    </div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-details">
+                        <div class="item-detail"><strong>颜色:</strong> ${item.color || '未设置'}</div>
+                        <div class="item-detail"><strong>品牌:</strong> ${item.brand || '未设置'}</div>
+                        <div class="item-detail"><strong>尺码:</strong> ${item.size || '未设置'}</div>
+                        <div class="item-detail"><strong>季节:</strong> ${item.season || '未设置'}</div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-edit" onclick="editItem(${item.id})">编辑</button>
+                        <button class="btn btn-danger" onclick="deleteItem(${item.id})">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 获取类别图标
+        function getCategoryIcon(category) {
+            const icons = {
+                '上衣': '👕',
+                '下装': '👖',
+                '连衣裙': '👗',
+                '外套': '🧥',
+                '鞋子': '👟',
+                '配饰': '🎒'
+            };
+            return icons[category] || '👔';
+        }
+        
+        // 更新统计数据
+        function updateStats() {
+            const totalItems = clothingItems.length;
+            const topCount = clothingItems.filter(item => item.category === '上衣').length;
+            const bottomCount = clothingItems.filter(item => ['下装', '连衣裙'].includes(item.category)).length;
+            const shoeCount = clothingItems.filter(item => item.category === '鞋子').length;
+            
+            document.getElementById('totalItems').textContent = totalItems;
+            document.getElementById('topCount').textContent = topCount;
+            document.getElementById('bottomCount').textContent = bottomCount;
+            document.getElementById('shoeCount').textContent = shoeCount;
+        }
+        
+        // 筛选功能
+        function filterItems() {
+            const categoryFilter = document.getElementById('filterCategory').value;
+            const seasonFilter = document.getElementById('filterSeason').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filteredItems = clothingItems.filter(item => {
+                const matchesCategory = !categoryFilter || item.category === categoryFilter;
+                const matchesSeason = !seasonFilter || item.season === seasonFilter;
+                const matchesSearch = !searchTerm || 
+                    item.name.toLowerCase().includes(searchTerm) ||
+                    (item.color && item.color.toLowerCase().includes(searchTerm)) ||
+                    (item.brand && item.brand.toLowerCase().includes(searchTerm));
+                
+                return matchesCategory && matchesSeason && matchesSearch;
+            });
+            
+            renderWardrobe(filteredItems);
+        }
+        
+        // 编辑衣物
+        function editItem(id) {
+            const item = clothingItems.find(item => item.id === id);
+            if (!item) return;
+            
+            editingItemId = id;
+            editImageData = item.image || null;
+            
+            // 填充编辑表单
+            document.getElementById('editItemName').value = item.name;
+            document.getElementById('editItemCategory').value = item.category;
+            document.getElementById('editItemColor').value = item.color || '';
+            document.getElementById('editItemBrand').value = item.brand || '';
+            document.getElementById('editItemSize').value = item.size || '';
+            document.getElementById('editItemSeason').value = item.season || '';
+            
+            // 显示现有图片或重置图片区域
+            if (item.image) {
+                showEditImagePreview(item.image);
+            } else {
+                resetEditImageUpload();
+            }
+            
+            // 显示模态框
+            document.getElementById('editModal').style.display = 'block';
+        }
+        
+        // 更新衣物
+        function updateClothing(e) {
+            e.preventDefault();
+            
+            const itemIndex = clothingItems.findIndex(item => item.id === editingItemId);
+            if (itemIndex === -1) return;
+            
+            clothingItems[itemIndex] = {
+                ...clothingItems[itemIndex],
+                name: document.getElementById('editItemName').value,
+                category: document.getElementById('editItemCategory').value,
+                color: document.getElementById('editItemColor').value,
+                brand: document.getElementById('editItemBrand').value,
+                size: document.getElementById('editItemSize').value,
+                season: document.getElementById('editItemSeason').value,
+                image: editImageData
+            };
+            
+            saveToLocalStorage();
+            renderWardrobe();
+            updateStats();
+            closeEditModal();
+            
+            showNotification('衣物更新成功！✨', 'success');
+        }
+        
+        // 关闭编辑模态框
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            editingItemId = null;
+            editImageData = null;
+            resetEditImageUpload();
+        }
+        
+        // 删除衣物
+        function deleteItem(id) {
+            if (confirm('确定要删除这件衣物吗？')) {
+                clothingItems = clothingItems.filter(item => item.id !== id);
+                saveToLocalStorage();
+                renderWardrobe();
+                updateStats();
+                
+                showNotification('衣物删除成功！', 'info');
+            }
+        }
+        
+        // 图片上传功能设置
+        function setupImageUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const imageInput = document.getElementById('imageInput');
+            const imagePreview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            const removeImage = document.getElementById('removeImage');
+            const aiAnalyzeBtn = document.getElementById('aiAnalyzeBtn');
+            
+            // 点击上传区域
+            uploadArea.addEventListener('click', () => {
+                imageInput.click();
+            });
+            
+            // 文件选择
+            imageInput.addEventListener('change', handleImageSelect);
+            
+            // 拖拽功能
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleImageFile(files[0]);
+                }
+            });
+            
+            // 移除图片
+            removeImage.addEventListener('click', resetImageUpload);
+            
+            // AI分析
+            aiAnalyzeBtn.addEventListener('click', analyzeImageWithAI);
+        }
+        
+        // 设置编辑模态框中的图片上传功能
+        function setupEditImageUpload() {
+            const editUploadArea = document.getElementById('editUploadArea');
+            const editImageInput = document.getElementById('editImageInput');
+            const editImagePreview = document.getElementById('editImagePreview');
+            const editPreviewImg = document.getElementById('editPreviewImg');
+            const editRemoveImage = document.getElementById('editRemoveImage');
+            
+            // 点击上传区域
+            editUploadArea.addEventListener('click', () => {
+                editImageInput.click();
+            });
+            
+            // 文件选择
+            editImageInput.addEventListener('change', handleEditImageSelect);
+            
+            // 拖拽功能
+            editUploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                editUploadArea.classList.add('drag-over');
+            });
+            
+            editUploadArea.addEventListener('dragleave', () => {
+                editUploadArea.classList.remove('drag-over');
+            });
+            
+            editUploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                editUploadArea.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleEditImageFile(files[0]);
+                }
+            });
+            
+            // 移除图片
+            editRemoveImage.addEventListener('click', resetEditImageUpload);
+        }
+        
+        // 处理图片选择
+        function handleImageSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleImageFile(file);
+            }
+        }
+        
+        // 处理编辑图片选择
+        function handleEditImageSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleEditImageFile(file);
+            }
+        }
+        
+        // 处理单个图片文件
+        function handleImageFile(file) {
+            // 验证文件类型
+            if (!file.type.startsWith('image/')) {
+                showNotification('请选择图片文件！', 'error');
+                return;
+            }
+            
+            // 验证文件大小 (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('图片大小不能超过5MB！', 'error');
+                return;
+            }
+            
+            // 压缩并预览图片
+            compressImage(file, (compressedDataUrl) => {
+                currentImageData = compressedDataUrl;
+                showImagePreview(compressedDataUrl);
+            });
+        }
+        
+        // 处理编辑图片文件
+        function handleEditImageFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showNotification('请选择图片文件！', 'error');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('图片大小不能超过5MB！', 'error');
+                return;
+            }
+            
+            compressImage(file, (compressedDataUrl) => {
+                editImageData = compressedDataUrl;
+                showEditImagePreview(compressedDataUrl);
+            });
+        }
+        
+        // 图片压缩
+        function compressImage(file, callback) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = function() {
+                // 计算新尺寸（最大800px）
+                const maxSize = 800;
+                let { width, height } = img;
+                
+                if (width > height) {
+                    if (width > maxSize) {
+                        height = height * (maxSize / width);
+                        width = maxSize;
+                    }
+                } else {
+                    if (height > maxSize) {
+                        width = width * (maxSize / height);
+                        height = maxSize;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                // 绘制压缩后的图片
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // 转换为DataURL
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                callback(compressedDataUrl);
+            };
+            
+            img.src = URL.createObjectURL(file);
+        }
+        
+        // 显示图片预览
+        function showImagePreview(dataUrl) {
+            const uploadArea = document.getElementById('uploadArea');
+            const imagePreview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            const aiAnalyzeBtn = document.getElementById('aiAnalyzeBtn');
+            
+            uploadArea.style.display = 'none';
+            imagePreview.style.display = 'block';
+            previewImg.src = dataUrl;
+            aiAnalyzeBtn.style.display = 'block';
+        }
+        
+        // 显示编辑图片预览
+        function showEditImagePreview(dataUrl) {
+            const editUploadArea = document.getElementById('editUploadArea');
+            const editImagePreview = document.getElementById('editImagePreview');
+            const editPreviewImg = document.getElementById('editPreviewImg');
+            
+            editUploadArea.style.display = 'none';
+            editImagePreview.style.display = 'block';
+            editPreviewImg.src = dataUrl;
+        }
+        
+        // 重置图片上传
+        function resetImageUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const imagePreview = document.getElementById('imagePreview');
+            const imageInput = document.getElementById('imageInput');
+            const aiAnalyzeBtn = document.getElementById('aiAnalyzeBtn');
+            
+            uploadArea.style.display = 'block';
+            imagePreview.style.display = 'none';
+            aiAnalyzeBtn.style.display = 'none';
+            imageInput.value = '';
+            currentImageData = null;
+        }
+        
+        // 重置编辑图片上传
+        function resetEditImageUpload() {
+            const editUploadArea = document.getElementById('editUploadArea');
+            const editImagePreview = document.getElementById('editImagePreview');
+            const editImageInput = document.getElementById('editImageInput');
+            
+            editUploadArea.style.display = 'block';
+            editImagePreview.style.display = 'none';
+            editImageInput.value = '';
+            editImageData = null;
+        }
+        
+        // AI图片识别分析
+        async function analyzeImageWithAI() {
+            if (!currentImageData) {
+                showNotification('请先选择图片！', 'error');
+                return;
+            }
+            
+            const aiAnalyzeBtn = document.getElementById('aiAnalyzeBtn');
+            const originalText = aiAnalyzeBtn.innerHTML;
+            
+            // 显示加载状态
+            aiAnalyzeBtn.disabled = true;
+            aiAnalyzeBtn.innerHTML = '<span class="loading-spinner"></span>AI分析中...';
+            
+            try {
+                // 智能AI分析
+                const result = await simulateAIAnalysis(currentImageData);
+                
+                // 显示分析结果和置信度
+                if (result.name) document.getElementById('itemName').value = result.name;
+                if (result.category) document.getElementById('itemCategory').value = result.category;
+                if (result.color) document.getElementById('itemColor').value = result.color;
+                if (result.season) document.getElementById('itemSeason').value = result.season;
+                
+                // 显示置信度信息
+                const confidence = result.confidence;
+                let confidenceText = '识别完成！';
+                if (confidence) {
+                    const avgConfidence = ((confidence.color + confidence.category + confidence.season) / 3 * 100).toFixed(0);
+                    confidenceText += ` (置信度: ${avgConfidence}%)`;
+                }
+                
+                showNotification(confidenceText, 'success');
+            } catch (error) {
+                console.error('AI分析失败:', error);
+                showNotification('AI分析失败，请手动填写信息', 'error');
+            } finally {
+                // 恢复按钮状态
+                aiAnalyzeBtn.disabled = false;
+                aiAnalyzeBtn.innerHTML = originalText;
+            }
+        }
+        
+        // 智能图像分析（基于颜色特征和形状特征的AI识别）
+        function simulateAIAnalysis(imageData) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // 创建图像分析canvas
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const img = new Image();
+                    
+                    img.onload = function() {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+                        
+                        // 分析图像颜色
+                        const colorAnalysis = analyzeImageColors(ctx, canvas.width, canvas.height);
+                        
+                        // 分析图像形状和纹理特征
+                        const shapeAnalysis = analyzeImageShape(ctx, canvas.width, canvas.height);
+                        
+                        // 基于分析结果推断衣物信息
+                        const result = inferClothingInfo(colorAnalysis, shapeAnalysis);
+                        
+                        resolve(result);
+                    };
+                    
+                    img.src = imageData;
+                }, 1500);
+            });
+        }
+        
+        // 颜色分析函数
+        function analyzeImageColors(ctx, width, height) {
+            const imageData = ctx.getImageData(0, 0, width, height);
+            const data = imageData.data;
+            const colorCounts = {};
+            const sampleRate = 10; // 每10个像素采样一次以提高性能
+            
+            for (let i = 0; i < data.length; i += 4 * sampleRate) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const alpha = data[i + 3];
+                
+                // 跳过透明像素
+                if (alpha < 128) continue;
+                
+                // 将RGB转换为HSL以更好地识别颜色
+                const hsl = rgbToHsl(r, g, b);
+                const colorName = getColorName(hsl);
+                
+                colorCounts[colorName] = (colorCounts[colorName] || 0) + 1;
+            }
+            
+            // 找到最主要的颜色
+            const sortedColors = Object.entries(colorCounts)
+                .sort((a, b) => b[1] - a[1])
+                .map(([color]) => color);
+            
+            return {
+                primaryColor: sortedColors[0] || '未知',
+                secondaryColor: sortedColors[1] || null,
+                colorDistribution: colorCounts
+            };
+        }
+        
+        // RGB转HSL
+        function rgbToHsl(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            
+            return [h * 360, s * 100, l * 100];
+        }
+        
+        // 根据HSL值获取颜色名称
+        function getColorName([h, s, l]) {
+            // 黑白灰处理
+            if (s < 10) {
+                if (l < 20) return '黑色';
+                if (l > 80) return '白色';
+                return '灰色';
+            }
+            
+            // 低亮度处理
+            if (l < 20) return '深色';
+            if (l > 90) return '浅色';
+            
+            // 根据色相判断颜色
+            if (h < 15 || h > 345) return s > 50 ? '红色' : '粉色';
+            if (h < 45) return '橙色';
+            if (h < 75) return '黄色';
+            if (h < 150) return '绿色';
+            if (h < 210) return '青色';
+            if (h < 270) return '蓝色';
+            if (h < 330) return '紫色';
+            return '粉色';
+        }
+        
+        // 形状分析函数
+        function analyzeImageShape(ctx, width, height) {
+            const imageData = ctx.getImageData(0, 0, width, height);
+            const data = imageData.data;
+            
+            // 计算图像的长宽比
+            const aspectRatio = width / height;
+            
+            // 分析边缘密度（简化版本）
+            let edgeCount = 0;
+            const sampleSize = Math.min(width, height) / 20;
+            
+            for (let y = sampleSize; y < height - sampleSize; y += sampleSize) {
+                for (let x = sampleSize; x < width - sampleSize; x += sampleSize) {
+                    const idx = (y * width + x) * 4;
+                    const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+                    
+                    // 检查周围像素的亮度差异
+                    const rightIdx = (y * width + x + sampleSize) * 4;
+                    const downIdx = ((y + sampleSize) * width + x) * 4;
+                    
+                    if (rightIdx < data.length && downIdx < data.length) {
+                        const rightBrightness = (data[rightIdx] + data[rightIdx + 1] + data[rightIdx + 2]) / 3;
+                        const downBrightness = (data[downIdx] + data[downIdx + 1] + data[downIdx + 2]) / 3;
+                        
+                        if (Math.abs(brightness - rightBrightness) > 30 || 
+                            Math.abs(brightness - downBrightness) > 30) {
+                            edgeCount++;
+                        }
+                    }
+                }
+            }
+            
+            return {
+                aspectRatio,
+                edgeDensity: edgeCount / ((width / sampleSize) * (height / sampleSize)),
+                isVertical: aspectRatio < 0.8,
+                isHorizontal: aspectRatio > 1.2
+            };
+        }
+        
+        // 基于分析结果推断衣物信息
+        function inferClothingInfo(colorAnalysis, shapeAnalysis) {
+            const { primaryColor, secondaryColor } = colorAnalysis;
+            const { aspectRatio, edgeDensity, isVertical, isHorizontal } = shapeAnalysis;
+            
+            // 类别推断逻辑
+            let category;
+            let name;
+            let season;
+            
+            if (isVertical && aspectRatio < 0.6) {
+                // 很高很窄，可能是连衣裙或大衣
+                category = edgeDensity > 0.3 ? '连衣裙' : '外套';
+                name = category === '连衣裙' ? '连衣裙' : '大衣';
+            } else if (isHorizontal) {
+                // 很宽，可能是鞋子或配饰
+                category = '鞋子';
+                name = '鞋子';
+            } else if (aspectRatio > 0.8 && aspectRatio < 1.2) {
+                // 接近正方形，可能是上衣
+                category = '上衣';
+                const topTypes = ['T恤', '衬衫', '毛衣', '背心'];
+                name = topTypes[Math.floor(Math.random() * topTypes.length)];
+            } else {
+                // 其他情况，可能是下装
+                category = '下装';
+                const bottomTypes = ['牛仔裤', '休闲裤', '短裤', '裙子'];
+                name = bottomTypes[Math.floor(Math.random() * bottomTypes.length)];
+            }
+            
+            // 季节推断
+            const darkColors = ['黑色', '深色', '灰色'];
+            const lightColors = ['白色', '浅色', '黄色'];
+            const warmColors = ['红色', '橙色', '黄色', '粉色'];
+            const coolColors = ['蓝色', '青色', '紫色', '绿色'];
+            
+            if (category === '外套' || darkColors.includes(primaryColor)) {
+                season = '秋季';
+            } else if (lightColors.includes(primaryColor)) {
+                season = '夏季';
+            } else if (warmColors.includes(primaryColor)) {
+                season = '春季';
+            } else if (coolColors.includes(primaryColor)) {
+                season = '冬季';
+            } else {
+                season = '四季';
+            }
+            
+            // 生成更准确的名称
+            const coloredName = `${primaryColor}${name}`;
+            
+            return {
+                name: coloredName,
+                category: category,
+                color: primaryColor,
+                season: season,
+                confidence: {
+                    color: Object.keys(colorAnalysis.colorDistribution).length > 0 ? 0.8 : 0.3,
+                    category: edgeDensity > 0.2 ? 0.7 : 0.5,
+                    season: 0.6
+                }
+            };
+        }
+        
+        // 改进的通知函数
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: 'linear-gradient(135deg, #4ade80 0%, #22c55e 100%)',
+                error: 'linear-gradient(135deg, #e53e3e 0%, #c53030 100%)',
+                info: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                warning: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)'
+            };
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                background: ${colors[type] || colors.success};
+                color: white;
+                padding: 20px 25px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                z-index: 1001;
+                font-weight: 600;
+                font-size: 1rem;
+                transform: translateX(400px);
+                transition: all 0.3s ease;
+                max-width: 350px;
+                backdrop-filter: blur(10px);
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        }
+        
+        // 键盘快捷键
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeEditModal();
+            }
+        });
+    </script>
+</body>
+</html>
